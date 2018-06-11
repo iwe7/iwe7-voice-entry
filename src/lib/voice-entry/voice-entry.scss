@@ -1,0 +1,38 @@
+:host {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: var(--height);
+  line-height: var(--height);
+  background-color: var(--backgroundColor);
+  --height: 44px;
+  --backgroundColor: #fff;
+}
+
+.voice-entry {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  top: 0px;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  .icon-yuyin {
+    font-size: 24px;
+  }
+  .voice-entry-container {
+    flex: 1;
+    input {
+      height: 30px;
+      width: 100%;
+      font-size: 16px;
+      padding: 0 10px;
+      box-sizing: border-box;
+      outline: none;
+      border: none;
+    }
+  }
+}

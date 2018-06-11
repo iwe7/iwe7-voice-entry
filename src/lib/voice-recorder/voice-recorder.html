@@ -1,0 +1,43 @@
+<layout-outlet #layout="layoutOutlet">
+  <div header>
+    <navbar-outlet>
+      <div navbarLeft (click)="cancel($event)">取消</div>
+      <div navbarTitle>
+        录音输入
+        <span class="timelong" *ngIf="showTip">
+          {{pressTime}}s
+        </span>
+      </div>
+      <div navbarRight (click)="sure($event)">确定</div>
+    </navbar-outlet>
+  </div>
+  <div class="voice-recorder" *ngIf="platform.WECHAT">
+    <audio #audio controls muted></audio>
+    <div *ngIf="showPreview">
+      <div class="voice-preview-time">
+        <i class="iconfont icon-icon7"></i>
+        时长&nbsp; {{pressTime}}s
+      </div>
+      <div class="voice-preview-btns">
+        <button mat-fab color="accent" onPress (onPress)="play($event)" (onRelease)="onRelease($event)">
+          <i class="iconfont icon-bofang"></i>
+        </button>
+        <button mat-fab color="primary" (click)="sure($event)">
+          <i class="iconfont icon-send"></i>
+        </button>
+        <button mat-fab color="accent" onPress (onPress)="cancel($event)" (onRelease)="onRelease($event)">
+          <i class="iconfont icon-zhongzhi"></i>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="!showPreview">
+      <button mat-fab onPress (onPress)="onPress($event)" (onPressing)="onPressing($event)" (onRelease)="onRelease($event)">
+        <i class="iconfont icon-yuyin"></i>
+      </button>
+      <div class="tip">按住录音</div>
+    </div>
+  </div>
+  <div class="empty" *ngIf="!platform.WECHAT">
+    暂不支持，请在微信浏览器中打开！
+  </div>
+</layout-outlet>
