@@ -26,9 +26,12 @@ export abstract class Iwe7MediaStream extends CanSubject<any> {
     }
 
     abstract init(type: string, time: number): void;
+    abstract play(): void;
+    abstract start(): void;
+    abstract stop(): void;
 }
-
-export class Iwe7UserMediaStream extends Iwe7MediaStream {
+// 谷歌浏览器
+export class Iwe7ChromeMediaStream extends Iwe7MediaStream {
     instance: MediaStream;
     constructor(public script: Iwe7ScriptService) {
         super();
@@ -70,10 +73,20 @@ export class Iwe7UserMediaStream extends Iwe7MediaStream {
             }
         });
     }
+    play() { }
+    start() { }
+    stop() { }
+}
+
+export class Iwe7WechatMediaStream extends Iwe7MediaStream {
+    init(type: string, time: number): void { }
+    play(): void { }
+    start(): void { }
+    stop(): void { }
 }
 
 export const Iwe7MediaStreamProvider: Provider = {
     provide: Iwe7MediaStream,
-    useClass: Iwe7UserMediaStream,
+    useClass: Iwe7ChromeMediaStream,
     deps: [Iwe7ScriptService]
 };

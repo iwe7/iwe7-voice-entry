@@ -3,7 +3,7 @@
     <navbar-outlet>
       <div navbarLeft (click)="cancel($event)">取消</div>
       <div navbarTitle>
-        录音输入
+        {{title}}
         <span class="timelong" *ngIf="showTip">
           {{pressTime}}s
         </span>
@@ -19,19 +19,19 @@
         时长&nbsp; {{pressTime}}s
       </div>
       <div class="voice-preview-btns">
-        <button mat-fab color="accent" onPress (onPress)="play($event)" (onRelease)="onRelease($event)">
+        <button mat-fab color="accent" (click)="play($event)">
           <i class="iconfont icon-bofang"></i>
         </button>
         <button mat-fab color="primary" (click)="sure($event)">
           <i class="iconfont icon-send"></i>
         </button>
-        <button mat-fab color="accent" onPress (onPress)="cancel($event)" (onRelease)="onRelease($event)">
+        <button mat-fab color="accent" (click)="back($event)">
           <i class="iconfont icon-zhongzhi"></i>
         </button>
       </div>
     </div>
     <div *ngIf="!showPreview">
-      <button mat-fab onPress (onPress)="onPress($event)" (onPressing)="onPressing($event)" (onRelease)="onRelease($event)">
+      <button mat-fab ngPress (ngPress)="onPress($event)" (ngPressing)="onPressing($event)" (ngRelease)="onRelease($event)">
         <i class="iconfont icon-yuyin"></i>
       </button>
       <div class="tip">按住录音</div>

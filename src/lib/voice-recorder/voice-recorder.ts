@@ -4,9 +4,12 @@ import { Iwe7MediaStreamProvider } from './../media-stream/media-stream';
 import { HttpClient } from '@angular/common/http';
 import { CustomComponent } from 'iwe7-core';
 import { LayoutOutletComponent } from 'iwe7-layout';
-import { Component, OnInit, Injector, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import {
+    Component, OnInit, Injector,
+    ViewChild, ElementRef, ChangeDetectorRef,
+    ChangeDetectionStrategy, Input
+} from '@angular/core';
 import { Iwe7MediaStream } from '../media-stream/media-stream';
-import { switchMap, tap } from 'rxjs/operators';
 import { Iwe7Platform } from 'iwe7-core';
 
 @Component({
@@ -15,7 +18,8 @@ import { Iwe7Platform } from 'iwe7-core';
     styleUrls: ['./voice-recorder.scss'],
     providers: [
         Iwe7MediaStreamProvider
-    ]
+    ],
+    changeDetection: ChangeDetectionStrategy.Default
 })
 export class VoiceRecorderComponent extends CustomComponent<any> implements OnInit {
     @ViewChild(LayoutOutletComponent) layout: LayoutOutletComponent;
@@ -26,6 +30,8 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
     showTip: boolean = false;
     pressTime: number = 0;
     showPreview: boolean = false;
+    @Input() title: string = '录音输入';
+    @Input() confirmTitle: string = '录音完成';
     constructor(
         injector: Injector,
         public media: Iwe7MediaStream,
@@ -47,46 +53,35 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
         this.layout.showHeader();
     }
 
-    start(time: number = 5000) {
-        this.mediaStreamRecorder.start(time);
-    }
-
-    save() {
-        this.mediaStreamRecorder.save();
-    }
-
-    resume() {
-        this.mediaStreamRecorder.resume();
-    }
-
-    pause() {
-        this.mediaStreamRecorder.pause();
-    }
-
-    stop() {
-        this.mediaStreamRecorder.stop();
-    }
-
+    // 发送
     sure(e: any) {
         this._customClose(this._customData);
     }
-
+    // 取消
     cancel(e: any) {
         this._customClose();
     }
-
+    // 返回重录
+    back(e: any) {
+        this.showPreview = false;
+        this.showTip = false;
+    }
+    // 触发长按
     onPress(e: any) {
         this.showTip = true;
         this.showPreview = false;
         this.cd.markForCheck();
     }
-
+    // 结束长按
     onRelease(e: any) {
-        this.showTip = false;
-        this.showPreview = true;
-        this.cd.markForCheck();
+        setTimeout(() => {
+            this.showTip = false;
+            this.showPreview = true;
+            this.title = this.confirmTitle;
+            this.cd.markForCheck();
+        }, 200);
     }
-
+    // 按压中计时
     onPressing(e: any) {
         this.pressTime = e;
         this.cd.markForCheck();

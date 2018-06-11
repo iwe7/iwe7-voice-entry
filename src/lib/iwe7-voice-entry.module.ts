@@ -1,4 +1,3 @@
-import { OnPressDirective } from './on-press';
 import { MatButtonModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -9,7 +8,7 @@ import { VoiceRecorderComponent } from './voice-recorder/voice-recorder';
 import { VoiceEntryComponent } from './voice-entry/voice-entry';
 import { NgModule } from '@angular/core';
 import { Iwe7HammerModule } from 'iwe7-hammer';
-
+import { Iwe7OnPressModule } from 'iwe7-on-press';
 @NgModule({
   imports: [
     Iwe7LayoutModule,
@@ -17,17 +16,16 @@ import { Iwe7HammerModule } from 'iwe7-hammer';
     CommonModule,
     HttpClientModule,
     MatButtonModule,
-    Iwe7HammerModule
+    Iwe7HammerModule,
+    Iwe7OnPressModule
   ],
   declarations: [
     VoiceEntryComponent,
-    VoiceRecorderComponent,
-    OnPressDirective
+    VoiceRecorderComponent
   ],
   exports: [
     VoiceEntryComponent,
-    VoiceRecorderComponent,
-    OnPressDirective
+    VoiceRecorderComponent
   ],
   entryComponents: [
     VoiceRecorderComponent
