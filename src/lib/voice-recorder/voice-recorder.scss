@@ -1,98 +1,75 @@
-:host
-{
-    display: flex;
-    flex-direction: column;
-
-    width: 100%;
-    height: 100%;
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
 }
 
-.empty
-{
-    color: gray;
+.empty {
+  color: gray;
 }
 
 .voice-recorder,
-.empty
-{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-
-    height: 100%;
+.empty {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
 }
 
-.voice-recorder
-{
-    background: #efefef;
-    .icon-icon7
-    {
-        font-size: 30px;
-
-        color: red;
-    }
-    .tip
-    {
-        margin-top: 10px;
-    }
-    audio
-    {
-        display: none;
-
-        width: 0;
-        height: 0;
-    }
-    .icon-yuyin
-    {
-        font-size: 50px;
-    }
+.voice-recorder {
+  background: #efefef;
+  .icon-icon7 {
+    font-size: 30px;
+    color: red;
+  }
+  .tip {
+    margin-top: 10px;
+  }
+  audio {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+  .icon-yuyin {
+    font-size: 50px;
+  }
 }
 
-.voice-preview-time
-{
-    font-size: 14px;
-    line-height: 40px;
+.voice-preview-time {
+  font-size: 14px;
+  line-height: 40px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  height: 40px;
+  margin-bottom: 10px;
+  .iconfont {
+    margin: 0 10px;
+  }
+}
 
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: center;
+.timelong {
+  display: inline-block;
+  min-width: 4em;
+  text-align: center;
+}
 
-    height: 40px;
-    margin-bottom: 10px;
-    .iconfont
-    {
-        margin: 0 10px;
+.voice-preview-btns {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  button {
+    margin: 0 3px;
+    .iconfont {
+      font-size: 30px;
     }
+  }
 }
 
-.timelong
-{
-    display: inline-block;
-
-    min-width: 4em;
-
-    text-align: center;
-}
-
-.voice-preview-btns
-{
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: center;
-    button
-    {
-        margin: 0 3px;
-        .iconfont
-        {
-            font-size: 30px;
-        }
-    }
-}
-
-.ng-press-disabled
-{
-    opacity: .8;
+.ng-press-disabled {
+  opacity: .8;
 }

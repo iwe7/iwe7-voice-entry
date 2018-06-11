@@ -1,6 +1,6 @@
 import { takeWhile, takeUntil } from 'rxjs/operators';
 import { Iwe7UrlService } from 'iwe7-url';
-import { Component, OnInit, ComponentFactoryResolver, Optional, Input } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, Optional, Input, ChangeDetectorRef, NgZone } from '@angular/core';
 import { Iwe7MenuService, Iwe7MaskService } from 'iwe7-layout';
 import { VoiceRecorderComponent } from '../voice-recorder/voice-recorder';
 import { interval, Subject } from 'rxjs';
@@ -14,7 +14,7 @@ import { interval, Subject } from 'rxjs';
 export class VoiceEntryComponent implements OnInit {
     @Input() time: number = 5000;
     @Input() url: string = this._url.getOpenUrl('baidu/speech');
-
+    timeLen: number = 0;
     text: string = '不支持';
     constructor(
         @Optional()
@@ -22,7 +22,9 @@ export class VoiceEntryComponent implements OnInit {
         @Optional()
         public mask: Iwe7MaskService,
         public resolver: ComponentFactoryResolver,
-        public _url: Iwe7UrlService
+        public _url: Iwe7UrlService,
+        public cd: ChangeDetectorRef,
+        public zone: NgZone
     ) { }
     ngOnInit() { }
     start() {
@@ -31,6 +33,10 @@ export class VoiceEntryComponent implements OnInit {
             this.menu.show('bottom', 270, factory, {
                 time: this.time
             }).subscribe(res => {
+                this.zone.run(() => {
+                    this.timeLen = res.time;
+                    this.cd.markForCheck();
+                });
                 console.log(res);
             });
             this.mask.show();

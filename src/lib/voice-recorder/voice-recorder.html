@@ -22,8 +22,9 @@
         <button mat-fab color="accent" (click)="play($event)">
           <i class="iconfont icon-bofang"></i>
         </button>
-        <button mat-fab color="primary" (click)="send($event)">
-          <i class="iconfont icon-send"></i>
+        <button mat-fab [disabled]="sending" color="primary" (click)="send($event)">
+          <mat-progress-spinner *ngIf="sending" class="spinner" color="accent" mode="indeterminate"></mat-progress-spinner>
+          <i class="iconfont icon-send" *ngIf="!sending"></i>
         </button>
         <button mat-fab color="accent" (click)="back($event)">
           <i class="iconfont icon-zhongzhi"></i>

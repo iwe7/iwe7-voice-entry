@@ -1,5 +1,5 @@
 import { tap } from 'rxjs/operators';
-import { Iwe7MenuService } from 'iwe7-layout';
+import { Iwe7MenuService, Iwe7MaskService } from 'iwe7-layout';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Iwe7MediaStreamProvider } from './../media-stream/media-stream';
 import { HttpClient } from '@angular/common/http';
@@ -33,12 +33,13 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
     showTip: boolean = false;
     pressTime: number = 0;
     showPreview: boolean = false;
-    @Input() title: string = '录音输入';
+    @Input() title: string = '长按录音';
     @Input() confirmTitle: string = '录音完成';
     // 上传录音url
     @Input() url: string;
 
     localId: string;
+    sending: boolean = false;
     constructor(
         injector: Injector,
         public media: Iwe7MediaStream,
@@ -49,7 +50,8 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
         public platform: Iwe7Platform,
         public record: Iwe7JssdkRecordService,
         public _url: Iwe7Url2Service,
-        public jssdk: Iwe7JssdkService
+        public jssdk: Iwe7JssdkService,
+        public mask: Iwe7MaskService
     ) {
         super(injector);
         this.menu.subscribe(res => {
@@ -78,17 +80,23 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
     }
     // 上传录音到服务器
     send() {
+        if (this.sending) {
+            return;
+        }
+        this.sending = true;
         if (this.localId) {
             this.record.upload(this.localId).pipe(
                 tap(res => {
                     this._customData = {
                         serviceId: res,
-                        localId: this.localId
+                        localId: this.localId,
+                        time: this.pressTime
                     };
                 })
-            ).subscribe(res =>
-                this._customClose(this._customData)
-            );
+            ).subscribe(res => {
+                this._customClose(this._customData);
+                this.sending = false;
+            });
         }
     }
     // 触发长按

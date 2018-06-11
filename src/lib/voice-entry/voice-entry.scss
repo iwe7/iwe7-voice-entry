@@ -7,6 +7,7 @@
   background-color: var(--backgroundColor);
   --height: 44px;
   --backgroundColor: #fff;
+  box-sizing: border-box;
 }
 
 .voice-entry {
@@ -20,6 +21,8 @@
   overflow: hidden;
   width: 100%;
   height: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
   .icon-yuyin {
     font-size: 24px;
   }
@@ -35,4 +38,11 @@
       border: none;
     }
   }
+}
+.voice-entry-placeholder{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

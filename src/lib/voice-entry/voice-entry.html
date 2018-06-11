@@ -2,5 +2,13 @@
   <div class="voice-entry-container">
     <input type="text" placeholder="请输入文字" x-webkit-speech />
   </div>
-  <i class="iconfont icon-yuyin" (click)="start()"></i>
+  <div class="voice-entry-placeholder">
+    <mat-chip-list>
+      <mat-chip color="accent" selected="true">
+        {{timeLen}}s&nbsp;
+        <i class="iconfont icon-audio1" *ngIf="timeLen>0" (click)="start()"></i>
+        <i class="iconfont icon-yuyin" *ngIf="timeLen==0" (click)="start()"></i>
+      </mat-chip>
+    </mat-chip-list>
+  </div>
 </div>

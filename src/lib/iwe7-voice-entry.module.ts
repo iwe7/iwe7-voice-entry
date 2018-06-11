@@ -1,4 +1,4 @@
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule, MatProgressSpinnerModule, MatChipsModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Iwe7MediaStreamProvider } from './media-stream/media-stream';
@@ -17,7 +17,9 @@ import { Iwe7OnPressModule } from 'iwe7-on-press';
     HttpClientModule,
     MatButtonModule,
     Iwe7HammerModule,
-    Iwe7OnPressModule
+    Iwe7OnPressModule,
+    MatProgressSpinnerModule,
+    MatChipsModule
   ],
   declarations: [
     VoiceEntryComponent,
