@@ -1,6 +1,8 @@
+import { Iwe7JssdkService } from 'iwe7-jssdk';
 import { Iwe7ScriptService } from 'iwe7-script';
 import { Provider } from "@angular/core";
 import { CanSubject } from 'iwe7-core';
+import { switchMap } from 'rxjs/operators';
 const pluginUrl: string = 'https://webrtcexperiment-webrtc.netdna-ssl.com/MediaStreamRecorder.js';
 declare const MediaStreamRecorder: any;
 declare const MediaRecorderWrapper: any;
@@ -79,12 +81,32 @@ export class Iwe7ChromeMediaStream extends Iwe7MediaStream {
 }
 
 export class Iwe7WechatMediaStream extends Iwe7MediaStream {
-    init(type: string, time: number): void { }
-    play(): void {
-
+    localId: string;
+    constructor(
+        public wx: Iwe7JssdkService
+    ) {
+        super();
     }
-    start(): void { }
-    stop(): void { }
+    init(type: string, time: number): void {
+        this.wx.load();
+    }
+    play(): void {
+        this.wx.playVoice(this.localId).subscribe();
+    }
+    start(): void {
+        this.wx.startRecord().pipe(
+            switchMap(
+                res => this.wx.onVoiceRecordEnd()
+            )
+        ).subscribe(res => {
+            this.localId = res;
+        });
+    }
+    stop(): void {
+        this.wx.stopRecord().subscribe(res => {
+            this.localId = res;
+        });
+    }
 }
 
 export const Iwe7MediaStreamProvider: Provider = {

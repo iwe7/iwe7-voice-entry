@@ -1,3 +1,4 @@
+import { tap } from 'rxjs/operators';
 import { Iwe7MenuService } from 'iwe7-layout';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Iwe7MediaStreamProvider } from './../media-stream/media-stream';
@@ -11,6 +12,8 @@ import {
 } from '@angular/core';
 import { Iwe7MediaStream } from '../media-stream/media-stream';
 import { Iwe7Platform } from 'iwe7-core';
+import { Iwe7JssdkRecordService, Iwe7JssdkService } from '../../../../iwe7-jssdk/src/public_api';
+import { Iwe7Url2Service } from 'iwe7-url';
 
 @Component({
     selector: 'voice-recorder',
@@ -34,6 +37,8 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
     @Input() confirmTitle: string = '录音完成';
     // 上传录音url
     @Input() url: string;
+
+    localId: string;
     constructor(
         injector: Injector,
         public media: Iwe7MediaStream,
@@ -41,7 +46,10 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
         public cd: ChangeDetectorRef,
         public dm: DomSanitizer,
         public menu: Iwe7MenuService,
-        public platform: Iwe7Platform
+        public platform: Iwe7Platform,
+        public record: Iwe7JssdkRecordService,
+        public _url: Iwe7Url2Service,
+        public jssdk: Iwe7JssdkService
     ) {
         super(injector);
         this.menu.subscribe(res => {
@@ -70,12 +78,27 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
     }
     // 上传录音到服务器
     send() {
-
+        if (this.localId) {
+            this.record.upload(this.localId).pipe(
+                tap(res => {
+                    this._customData = {
+                        serviceId: res,
+                        localId: this.localId
+                    };
+                })
+            ).subscribe(res =>
+                this._customClose(this._customData)
+            );
+        }
     }
     // 触发长按
     onPress(e: any) {
         this.showTip = true;
         this.showPreview = false;
+        this.record.start().subscribe(res => {
+            this.localId = res;
+            console.log(res);
+        });
         this.cd.markForCheck();
     }
     // 结束长按
@@ -84,6 +107,7 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
             this.showTip = false;
             this.showPreview = true;
             this.title = this.confirmTitle;
+            this.record.stop();
             this.cd.markForCheck();
         }, 200);
     }

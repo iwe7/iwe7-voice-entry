@@ -29,8 +29,9 @@ export class VoiceEntryComponent implements OnInit {
         const factory = this.resolver.resolveComponentFactory(VoiceRecorderComponent);
         if (this.menu && this.mask) {
             this.menu.show('bottom', 270, factory, {
-                time: this.time,
-                url: this.url
+                time: this.time
+            }).subscribe(res => {
+                console.log(res);
             });
             this.mask.show();
         } else {
