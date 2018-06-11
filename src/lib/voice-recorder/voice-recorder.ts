@@ -32,6 +32,8 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
     showPreview: boolean = false;
     @Input() title: string = '录音输入';
     @Input() confirmTitle: string = '录音完成';
+    // 上传录音url
+    @Input() url: string;
     constructor(
         injector: Injector,
         public media: Iwe7MediaStream,
@@ -65,6 +67,10 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
     back(e: any) {
         this.showPreview = false;
         this.showTip = false;
+    }
+    // 上传录音到服务器
+    send() {
+
     }
     // 触发长按
     onPress(e: any) {

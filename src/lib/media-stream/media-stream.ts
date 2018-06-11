@@ -80,7 +80,9 @@ export class Iwe7ChromeMediaStream extends Iwe7MediaStream {
 
 export class Iwe7WechatMediaStream extends Iwe7MediaStream {
     init(type: string, time: number): void { }
-    play(): void { }
+    play(): void {
+
+    }
     start(): void { }
     stop(): void { }
 }
