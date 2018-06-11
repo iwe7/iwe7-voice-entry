@@ -1,3 +1,4 @@
+import { VoiceTransferComponent } from './voice-transfer/voice-transfer';
 import { MatButtonModule, MatProgressSpinnerModule, MatChipsModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -23,14 +24,17 @@ import { Iwe7OnPressModule } from 'iwe7-on-press';
   ],
   declarations: [
     VoiceEntryComponent,
-    VoiceRecorderComponent
+    VoiceRecorderComponent,
+    VoiceTransferComponent
   ],
   exports: [
     VoiceEntryComponent,
-    VoiceRecorderComponent
+    VoiceRecorderComponent,
+    VoiceTransferComponent
   ],
   entryComponents: [
-    VoiceRecorderComponent
+    VoiceRecorderComponent,
+    VoiceTransferComponent
   ],
   providers: [
     Iwe7MediaStreamProvider

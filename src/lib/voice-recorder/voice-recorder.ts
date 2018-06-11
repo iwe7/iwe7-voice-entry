@@ -1,10 +1,9 @@
 import { tap } from 'rxjs/operators';
-import { Iwe7MenuService, Iwe7MaskService } from 'iwe7-layout';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Iwe7MediaStreamProvider } from './../media-stream/media-stream';
 import { HttpClient } from '@angular/common/http';
 import { CustomComponent } from 'iwe7-core';
-import { LayoutOutletComponent } from 'iwe7-layout';
+import { LayoutOutletComponent, Iwe7MenuService, Iwe7MaskService } from 'iwe7-layout';
 import {
     Component, OnInit, Injector,
     ViewChild, ElementRef, ChangeDetectorRef,
@@ -12,7 +11,7 @@ import {
 } from '@angular/core';
 import { Iwe7MediaStream } from '../media-stream/media-stream';
 import { Iwe7Platform } from 'iwe7-core';
-import { Iwe7JssdkRecordService, Iwe7JssdkService } from '../../../../iwe7-jssdk/src/public_api';
+import { Iwe7JssdkRecordService, Iwe7JssdkService } from 'iwe7-jssdk';
 import { Iwe7Url2Service } from 'iwe7-url';
 
 @Component({
