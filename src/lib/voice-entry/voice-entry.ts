@@ -19,7 +19,6 @@ import { ViewportRuler } from '@angular/cdk/scrolling';
     styleUrls: ['./voice-entry.scss'],
     providers: [Iwe7IcssService]
 })
-
 export class VoiceEntryComponent extends BaseWithIcss implements OnInit, AfterViewInit {
     @Input() time: number = 5000;
     @Input() url: string = this._url.getOpenUrl('baidu/speech');

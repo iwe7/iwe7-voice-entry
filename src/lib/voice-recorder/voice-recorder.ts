@@ -1,6 +1,4 @@
 import { tap } from 'rxjs/operators';
-import { DomSanitizer } from '@angular/platform-browser';
-import { HttpClient } from '@angular/common/http';
 import { LayoutOutletComponent, Iwe7MenuService, Iwe7MaskService } from 'iwe7-layout';
 import {
     Component, OnInit, Injector,
@@ -9,7 +7,6 @@ import {
 } from '@angular/core';
 import { Iwe7Platform, CustomComponent } from 'iwe7-core';
 import { Iwe7JssdkRecordService, Iwe7JssdkService, Iwe7JssdkVoiceService } from 'iwe7-jssdk';
-import { Iwe7Url2Service } from 'iwe7-url';
 
 @Component({
     selector: 'voice-recorder',
@@ -95,13 +92,15 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
     // 播放
     playStatus: string = 'stop';
     play(e: any) {
-        this.playStatus = 'playing';
-        this.cd.markForCheck();
-        console.log(this.playStatus);
-        this.voice.play(this.localId).subscribe(res => {
-            this.playStatus = res;
-            console.log(this.playStatus);
+        this._zone.run(() => {
+            this.playStatus = 'playing';
             this.cd.markForCheck();
+        });
+        this.voice.play(this.localId).subscribe(res => {
+            this._zone.run(() => {
+                this.playStatus = res;
+                this.cd.markForCheck();
+            });
         });
     }
 
@@ -129,13 +128,10 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
                 this.emit();
                 return;
             }
-            this.record.upload(this.localId).pipe(
-                tap(res => {
-                    this.serveId = res;
-                })
-            ).subscribe(res => {
+            this.record.upload(this.localId).subscribe(res => {
+                this.serveId = res;
+                console.log(res);
                 this.emit();
-                this.sending = false;
             });
         }
     }
