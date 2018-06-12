@@ -1,17 +1,14 @@
 import { tap } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Iwe7MediaStreamProvider } from './../media-stream/media-stream';
 import { HttpClient } from '@angular/common/http';
-import { CustomComponent } from 'iwe7-core';
 import { LayoutOutletComponent, Iwe7MenuService, Iwe7MaskService } from 'iwe7-layout';
 import {
     Component, OnInit, Injector,
     ViewChild, ElementRef, ChangeDetectorRef,
     ChangeDetectionStrategy, Input
 } from '@angular/core';
-import { Iwe7MediaStream } from '../media-stream/media-stream';
-import { Iwe7Platform } from 'iwe7-core';
-import { Iwe7JssdkRecordService, Iwe7JssdkService } from 'iwe7-jssdk';
+import { Iwe7Platform, CustomComponent } from 'iwe7-core';
+import { Iwe7JssdkRecordService, Iwe7JssdkService, Iwe7JssdkVoiceService } from 'iwe7-jssdk';
 import { Iwe7Url2Service } from 'iwe7-url';
 
 @Component({
@@ -19,7 +16,7 @@ import { Iwe7Url2Service } from 'iwe7-url';
     templateUrl: 'voice-recorder.html',
     styleUrls: ['./voice-recorder.scss'],
     providers: [
-        Iwe7MediaStreamProvider
+        Iwe7JssdkRecordService
     ],
     changeDetection: ChangeDetectionStrategy.Default
 })
@@ -30,27 +27,27 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
     mediaStreamRecorder: any;
     urls: any[] = [];
     showTip: boolean = false;
+
     pressTime: number = 0;
+    localId: string;
+    serveId: string;
+
     showPreview: boolean = false;
     @Input() title: string = '长按录音';
     @Input() confirmTitle: string = '录音完成';
     // 上传录音url
     @Input() url: string;
 
-    localId: string;
     sending: boolean = false;
     constructor(
         injector: Injector,
-        public media: Iwe7MediaStream,
-        public http: HttpClient,
         public cd: ChangeDetectorRef,
-        public dm: DomSanitizer,
         public menu: Iwe7MenuService,
         public platform: Iwe7Platform,
         public record: Iwe7JssdkRecordService,
-        public _url: Iwe7Url2Service,
         public jssdk: Iwe7JssdkService,
-        public mask: Iwe7MaskService
+        public mask: Iwe7MaskService,
+        public voice: Iwe7JssdkVoiceService
     ) {
         super(injector);
         this.menu.subscribe(res => {
@@ -62,20 +59,64 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
 
     ngOnInit() {
         this.layout.showHeader();
+        const { timeLen, localId, serveId } = this._customData;
+        if (timeLen > 0) {
+            this.pressTime = timeLen;
+            this.serveId = serveId;
+            this.localId = localId;
+            this.showTip = false;
+            this.showPreview = true;
+            this.title = this.confirmTitle;
+        }
     }
 
     // 发送
     sure(e: any) {
-        this._customClose(this._customData);
+        if (this.localId) {
+            this.send();
+        } else {
+            this.emit();
+        }
     }
     // 取消
     cancel(e: any) {
-        this._customClose();
+        this.sending = false;
+        this._customClose(this._customData);
     }
     // 返回重录
     back(e: any) {
+        this.sending = false;
         this.showPreview = false;
         this.showTip = false;
+        this.pressTime = 0;
+        this.localId = undefined;
+        this.serveId = undefined;
+    }
+    // 播放
+    playStatus: string = 'stop';
+    play(e: any) {
+        this.playStatus = 'playing';
+        this.cd.markForCheck();
+        console.log(this.playStatus);
+        this.voice.play(this.localId).subscribe(res => {
+            this.playStatus = res;
+            console.log(this.playStatus);
+            this.cd.markForCheck();
+        });
+    }
+
+    stop(e: any) {
+        this.voice.pause(this.localId);
+    }
+
+    emit() {
+        this._customData = {
+            serveId: this.serveId,
+            localId: this.localId,
+            timeLen: this.pressTime
+        };
+        this._customClose(this._customData);
+        this.sending = false;
     }
     // 上传录音到服务器
     send() {
@@ -84,16 +125,16 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
         }
         this.sending = true;
         if (this.localId) {
+            if (this.serveId) {
+                this.emit();
+                return;
+            }
             this.record.upload(this.localId).pipe(
                 tap(res => {
-                    this._customData = {
-                        serviceId: res,
-                        localId: this.localId,
-                        time: this.pressTime
-                    };
+                    this.serveId = res;
                 })
             ).subscribe(res => {
-                this._customClose(this._customData);
+                this.emit();
                 this.sending = false;
             });
         }
@@ -102,19 +143,21 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
     onPress(e: any) {
         this.showTip = true;
         this.showPreview = false;
+        this.localId = undefined;
+        this.serveId = undefined;
+        this.pressTime = 0;
         this.record.start().subscribe(res => {
             this.localId = res;
-            console.log(res);
         });
         this.cd.markForCheck();
     }
     // 结束长按
     onRelease(e: any) {
+        this.record.stop();
         setTimeout(() => {
             this.showTip = false;
             this.showPreview = true;
             this.title = this.confirmTitle;
-            this.record.stop();
             this.cd.markForCheck();
         }, 200);
     }

@@ -4,7 +4,7 @@
   </div>
   <div class="voice-entry-placeholder">
     <mat-chip-list>
-      <mat-chip color="accent" selected="true">
+      <mat-chip [color]="color" selected="true">
         &nbsp;{{timeLen}}s&nbsp;
         <i class="iconfont icon-audio1" *ngIf="timeLen>0" (click)="start()"></i>
         <i class="iconfont icon-yuyin" *ngIf="timeLen==0" (click)="start()"></i>

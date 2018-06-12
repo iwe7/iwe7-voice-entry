@@ -23,10 +23,15 @@ import { ViewportRuler } from '@angular/cdk/scrolling';
 export class VoiceEntryComponent extends BaseWithIcss implements OnInit, AfterViewInit {
     @Input() time: number = 5000;
     @Input() url: string = this._url.getOpenUrl('baidu/speech');
+    // 录音数据
     timeLen: number = 0;
+    localId: string;
+    serveId: string;
+
     text: string = '不支持';
     @ViewChild('input') input: ElementRef;
     @Input() placeholder: string = '请输入文字';
+    color: string = 'accent';
     constructor(
         @Optional()
         public menu: Iwe7MenuService,
@@ -64,10 +69,16 @@ export class VoiceEntryComponent extends BaseWithIcss implements OnInit, AfterVi
         const factory = this.resolver.resolveComponentFactory(VoiceRecorderComponent);
         if (this.menu && this.mask) {
             this.menu.show('bottom', 270, factory, {
-                time: this.time
+                time: this.time,
+                timeLen: this.timeLen || 0,
+                localId: this.localId,
+                serveId: this.serveId
             }).subscribe(res => {
                 this.zone.run(() => {
-                    this.timeLen = res.time;
+                    this.timeLen = res.timeLen || 0;
+                    this.localId = res.localId;
+                    this.serveId = res.serveId;
+                    this.color = 'primary';
                     this.cd.markForCheck();
                 });
                 console.log(res);

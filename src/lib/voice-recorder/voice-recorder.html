@@ -19,8 +19,11 @@
         时长&nbsp; {{pressTime}}s
       </div>
       <div class="voice-preview-btns">
-        <button mat-fab color="accent" (click)="play($event)">
+        <button mat-fab color="accent" (click)="play($event)" *ngIf="playStatus !== 'playing'">
           <i class="iconfont icon-bofang"></i>
+        </button>
+        <button mat-fab color="accent" (click)="stop($event)" *ngIf="playStatus ===  'playing'">
+          <i class="iconfont icon-stop"></i>
         </button>
         <button mat-fab [disabled]="sending" color="primary" (click)="send($event)">
           <mat-progress-spinner *ngIf="sending" class="spinner" color="accent" mode="indeterminate"></mat-progress-spinner>

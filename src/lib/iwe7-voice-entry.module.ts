@@ -2,7 +2,6 @@ import { VoiceTransferComponent } from './voice-transfer/voice-transfer';
 import { MatButtonModule, MatProgressSpinnerModule, MatChipsModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { Iwe7MediaStreamProvider } from './media-stream/media-stream';
 import { Iwe7NavbarModule } from 'iwe7-navbar';
 import { Iwe7LayoutModule } from 'iwe7-layout';
 import { VoiceRecorderComponent } from './voice-recorder/voice-recorder';
@@ -36,8 +35,6 @@ import { Iwe7OnPressModule } from 'iwe7-on-press';
     VoiceRecorderComponent,
     VoiceTransferComponent
   ],
-  providers: [
-    Iwe7MediaStreamProvider
-  ]
+  providers: []
 })
 export class Iwe7VoiceEntryModule { }
