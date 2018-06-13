@@ -1,57 +1,11 @@
 :host {
-  display: block;
-  position: relative;
-  width: 100%;
-  height: var(--height);
-  line-height: var(--height);
-  background-color: var(--backgroundColor);
   --height: 44px;
   --backgroundColor: #fff;
   --entryPosition: absolute;
   --entryZindex: 1;
-  box-sizing: border-box;
-}
-
-.voice-entry {
-  display: flex;
-  flex-direction: row;
-  position: var(--entryPosition);
+  position: relative;
+  display: inline-block;
   height: var(--height);
-  z-index: var(--entryZindex);
-  left: 0px;
-  right: 0px; // bottom: 0px;
-  top: 0px;
-  overflow: hidden;
-  width: 100%;
-  padding: 0 10px;
-  box-sizing: border-box;
-  .icon-yuyin {
-    font-size: 24px;
-  }
-  .voice-entry-container {
-    flex: 1;
-    position: relative;
-    &:after {
-      display: block;
-      position: absolute;
-      content: " ";
-      bottom: 0px;
-      left: 0px;
-      right: 0px;
-      height: 1px;
-      transform: scaleY(.5);
-      background: #efefef;
-    }
-    input {
-      height: 30px;
-      width: 100%;
-      font-size: 16px;
-      padding: 0 10px;
-      box-sizing: border-box;
-      outline: none;
-      border: none;
-    }
-  }
 }
 
 .voice-entry-placeholder {

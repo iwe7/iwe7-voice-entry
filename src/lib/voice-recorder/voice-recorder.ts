@@ -65,10 +65,11 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
             this.showPreview = true;
             this.title = this.confirmTitle;
         }
+        super.ngOnInit();
     }
 
     // 发送
-    sure(e: any) {
+    sure(e?: any) {
         if (this.localId) {
             this.send();
         } else {
@@ -76,12 +77,12 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
         }
     }
     // 取消
-    cancel(e: any) {
+    cancel(e?: any) {
         this.sending = false;
         this._customClose(this._customData);
     }
     // 返回重录
-    back(e: any) {
+    back(e?: any) {
         this.sending = false;
         this.showPreview = false;
         this.showTip = false;
@@ -91,7 +92,7 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
     }
     // 播放
     playStatus: string = 'stop';
-    play(e: any) {
+    play(e?: any) {
         this._zone.run(() => {
             this.playStatus = 'playing';
             this.cd.markForCheck();
@@ -104,11 +105,11 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
         });
     }
 
-    stop(e: any) {
+    stop(e?: any) {
         this.voice.pause(this.localId);
     }
 
-    emit() {
+    emit(e?: any) {
         this._customData = {
             serveId: this.serveId,
             localId: this.localId,
@@ -118,7 +119,7 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
         this.sending = false;
     }
     // 上传录音到服务器
-    send() {
+    send(e?: any) {
         if (this.sending) {
             return;
         }
@@ -136,7 +137,7 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
         }
     }
     // 触发长按
-    onPress(e: any) {
+    onPress(e?: any) {
         this.showTip = true;
         this.showPreview = false;
         this.localId = undefined;
@@ -148,7 +149,7 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
         this.cd.markForCheck();
     }
     // 结束长按
-    onRelease(e: any) {
+    onRelease(e?: any) {
         this.record.stop();
         setTimeout(() => {
             this.showTip = false;
@@ -158,7 +159,7 @@ export class VoiceRecorderComponent extends CustomComponent<any> implements OnIn
         }, 200);
     }
     // 按压中计时
-    onPressing(e: any) {
+    onPressing(e?: any) {
         this.pressTime = e;
         this.cd.markForCheck();
     }

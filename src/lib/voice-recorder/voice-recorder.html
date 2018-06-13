@@ -25,7 +25,7 @@
         <button mat-fab color="accent" (click)="stop($event)" *ngIf="playStatus ===  'playing'">
           <i class="iconfont icon-stop"></i>
         </button>
-        <button mat-fab [disabled]="sending" color="primary" (click)="send($event)">
+        <button mat-fab [disabled]="sending" color="primary" (click)="send()">
           <mat-progress-spinner *ngIf="sending" class="spinner" color="accent" mode="indeterminate"></mat-progress-spinner>
           <i class="iconfont icon-send" *ngIf="!sending"></i>
         </button>
